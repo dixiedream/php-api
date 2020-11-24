@@ -1,0 +1,31 @@
+propel:
+  paths:
+    # The directory where Propel expects to find your `schema.xml` file.
+    schemaDir: .
+
+    # The directory where Propel should output generated object model classes.
+    phpDir: ./src
+    phpConfDir: ./src/config
+    migrationDir: ./migrations
+    sqlDir: ./sql
+
+  database:
+    connections:
+      windows:
+        adapter: mysql
+        classname: Propel\Runtime\Connection\ConnectionWrapper
+        dsn: "mysql:host=database;dbname=%env.DB_DATABASE%"
+        user: "%env.DB_USER%"
+        password: "%env.DB_PASSWORD%"
+        settings:
+          charset: utf8mb4
+          queries:
+            utf8: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, COLLATION_CONNECTION = utf8mb4_unicode_ci, COLLATION_DATABASE = utf8mb4_unicode_ci, COLLATION_SERVER = utf8mb4_unicode_ci"
+  runtime:
+    defaultConnection: windows
+    connections:
+      - windows
+  generator:
+    defaultConnection: windows
+    connections:
+      - windows

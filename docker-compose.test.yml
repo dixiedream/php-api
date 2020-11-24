@@ -1,0 +1,31 @@
+version: "2.4"
+
+services:
+  tests:
+    build:
+      context: .
+      target: test
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_DATABASE=phpboilerplate
+      - HOSTNAME=http://localhost
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=phpboilerplate
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    volumes:
+      - ./sql/phpboilerplate.sql:/docker-entrypoint-initdb.d/initialStructure.sql:ro # Initial structure, change filename accordingly
+    healthcheck:
+      test: "mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD:-admin} ping -h localhost"
+      timeout: 20s
+      retries: 15

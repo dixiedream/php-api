@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="windows" defaultIdMethod="native" namespace="models"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd">
+    <behavior name="auto_add_pk"/>
+    <table name="api_key" idMethod="native" phpName="ApiKey">
+        <column name="expire_date" phpName="ExpireDate" type="DATE" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
+        <column name="key_value" phpName="KeyValue" type="VARCHAR" size="255" required="true" primaryKey="true"/>
+        <behavior name="timestampable"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+</database>

@@ -1,0 +1,9 @@
+.vscode/
+scripts
+.git
+.gitignore
+docker-compose.*
+Jenkinsfile
+README.md
+TODO.md
+schema.xml

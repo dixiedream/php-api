@@ -1,0 +1,42 @@
+{
+  "name": "dixiedream/php-api-boilerplate",
+  "description": "PHP API boilerplate",
+  "version": "0.0.0",
+  "autoload": {
+    "psr-4": {
+      "api\\": "src/api/",
+      "controllers\\": "src/controllers/",
+      "constants\\": "src/constants/",
+      "exceptions\\": "src/exceptions/",
+      "models\\": "src/models/",
+      "routes\\": "src/routes/",
+      "shared\\": "src/shared/",
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "monolog/monolog": "^2.1.0",
+    "phpmailer/phpmailer": "^6.1.6",
+    "propel/propel": "~2.0@dev",
+    "phroute/phroute": "^2.1"
+  },
+  "require-dev": {
+    "guzzlehttp/guzzle": "^7.0",
+    "phpmd/phpmd": "@stable",
+    "phpunit/phpunit": "^9",
+    "squizlabs/php_codesniffer": "^3.5.5",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "sebastian/phpcpd": "^6.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "if [ -d .git ] ; then for file in `ls .git-hooks`; do ln -sf ../../.git-hooks/${file} .git/hooks/${file}; done fi"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Alessandro Lucarini",
+      "email": "dixiedream@hotmail.it"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+version: "2.4"
+
+services:
+  server:
+    build:
+      context: .
+      target: dev
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+    environment:
+      - TIMEZONE=Europe/Rome
+      - DB_USER=window
+      - DB_PASSWORD=window
+      - DB_DATABASE=windows
+      - HOSTNAME=http://localhost
+    depends_on:
+      database:
+        condition: service_started
+
+  database:
+    image: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=windows
+      - MYSQL_USER=window
+      - MYSQL_PASSWORD=window
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: "mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD:-admin} ping -h localhost"
+      timeout: 20s
+      retries: 15
+
+volumes:
+  dbdata:

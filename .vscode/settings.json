@@ -1,0 +1,31 @@
+{
+  "editor.quickSuggestions": {
+    "comments": true
+  },
+  "php.suggest.basic": false,
+  "php-docblocker.useShortNames": true,
+  "php-docblocker.author": {
+    "name": "Alessandro Lucarini",
+    "email": "alessandro.lucarini@smanapp.com"
+  },
+  "php-docblocker.gap": false,
+  "php-docblocker.returnVoid": false,
+  "search.exclude": {
+    "**/src/models/Base": true,
+    "**/src/models/Map": true,
+    "**/vendor": true
+  },
+  "php-cs-fixer.onsave": true,
+  "php-cs-fixer.formatHtml": true,
+  "phpcs.standard": "PSR2",
+  "phpcs.ignorePatterns": ["*/vendor/*", "*/Base/*", "*/Map/*", "*/migrations/*"],
+  "eslint.enable": false,
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/CVS/**",
+    "**/.DS_Store/**",
+    "**/vendor/**/{Test,test,Tests,tests}/**/*Test.php"
+  ]
+}
