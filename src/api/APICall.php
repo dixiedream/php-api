@@ -12,18 +12,11 @@ class APICall
     protected $logger;
 
     /**
-     * Used for static assets in Api response
-     * @var string
-     */
-    protected $basePath;
-
-    /**
      * @param Logger $logger
      */
-    public function __construct(Logger $logger = null, string $basePath = null)
+    public function __construct(Logger $logger = null)
     {
         $this->logger = $logger ?? new Logger(static::class);
-        $this->basePath = $basePath ?? getenv('HOSTNAME') . '/uploads';
     }
 
     /**

@@ -8,6 +8,7 @@ A PHP boilerplate for create simple API without the needing of extra bloat
 - Propel ORM for model creation
 - Db based session
 - Api-Key authentication
+- Docker Swarm ready with secrets *_FILE env variables
 
 ## Setup
 
@@ -36,6 +37,9 @@ I use Propel ORM, it's fairly simple to use once you setup it (hopefully this te
 #### How to (starting from scratch)
 
 ```
+# Start environment
+docker-compose up
+
 # Define your database structure (MySql or MariaDb) in `schema.xml`
 
 # Create the db import structure
@@ -50,12 +54,18 @@ sh scripts/propel.sh build
 
 #### How to (after machine change or for new dev)
 ```
+# Start environment
+docker-compose up
+
 sh scripts/propel.sh sql:insert
 sh scripts/propel.sh migrate
 ```
 
 #### How to (build updates)
 ```
+# Start environment
+docker-compose up
+
 # Change your schema accordingly than
 # Create a migration file for updating production stuff
 sh scripts/propel.sh diff

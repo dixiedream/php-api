@@ -4,10 +4,6 @@
   },
   "php.suggest.basic": false,
   "php-docblocker.useShortNames": true,
-  "php-docblocker.author": {
-    "name": "Alessandro Lucarini",
-    "email": "alessandro.lucarini@smanapp.com"
-  },
   "php-docblocker.gap": false,
   "php-docblocker.returnVoid": false,
   "search.exclude": {
