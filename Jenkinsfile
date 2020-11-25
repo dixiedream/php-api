@@ -60,7 +60,7 @@ pipeline{
                     -d mariadb
                     '''
                 sh '''
-                docker run --link=test:database --rm \
+                docker run --link=testDb:database --rm \
                     -e DB_USER=$MYSQL_USER \
                     -e DB_PASSWORD=$MYSQL_PASSWORD \
                     -e DB_DATABASE=$MYSQL_DATABASE \
@@ -70,7 +70,7 @@ pipeline{
             }
             post{
                 always{
-                    sh "docker rm --force driveDb"
+                    sh "docker rm --force testDb"
                 }
                 success{
                     echo "====++++Tests passed++++===="
