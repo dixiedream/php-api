@@ -6,7 +6,6 @@ A PHP boilerplate for create simple API without the needing of extra bloat
 - PHP as an Apache module
 - MariaDb/MySql database integration
 - Propel ORM for model creation
-- Db based session
 - Api-Key authentication
 - Docker Swarm ready with secrets *_FILE env variables
 

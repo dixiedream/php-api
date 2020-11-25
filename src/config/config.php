@@ -5,9 +5,15 @@
  */
 use Propel\Runtime\Propel;
 
+if (getenv('DB_CONNECTION')) {
+    $dsn = getenv('DB_CONNECTION');
+} else {
+    $dsn = 'mysql:host=database;dbname=' . getenv('DB_DATABASE');
+}
+
 $conf = [
     'classname' => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
-    'dsn' => 'mysql:host=database;dbname=' . getenv('DB_DATABASE'),
+    'dsn' => $dsn,
     'user' => getenv('DB_USER'),
     'password' => getenv('DB_PASSWORD'),
     'settings' => [

@@ -43,30 +43,43 @@ pipeline{
             }
         }
         
-        // stage('Integration tests') {
-        //     steps {
-        //         sh "docker run --name driveDb -d mongo:4"
-        //         sh '''
-        //         docker run --link=driveDb:db --rm \
-        //             -e \"JWT_PRIVATE_KEY=testSecret\" \
-        //             -e \"JWT_ISSUER=https://your.issuer.com\" \
-        //             -e \"MONGO_CONNECTION=mongodb://db/driveAPI_tests\" \
-        //             -u node \
-        //             $BUILD_IMAGE_REPO_TAG-test
-        //             '''
-        //     }
-        //     post{
-        //         always{
-        //             sh "docker rm --force driveDb"
-        //         }
-        //         success{
-        //             echo "====++++Tests passed++++===="
-        //         }
-        //         failure{
-        //             echo "====++++Tests failed++++===="
-        //         }
-        //     }
-        // }
+        stage('Integration tests') {
+            environment {
+                MYSQL_ROOT_PASSWORD = "root"
+                MYSQL_DATABASE = "phpboilerplate"
+                MYSQL_USER = "user"
+                MYSQL_PASSWORD = "password"
+            }
+            steps {
+                sh '''
+                    docker run --name testDb \
+                    -e $MYSQL_ROOT_PASSWORD \
+                    -e $MYSQL_DATABASE \
+                    -e $MYSQL_USER \
+                    -e $MYSQL_PASSWORD \
+                    -d mariadb
+                    '''
+                sh '''
+                docker run --link=test:database --rm \
+                    -e DB_USER=$MYSQL_USER \
+                    -e DB_PASSWORD=$MYSQL_PASSWORD \
+                    -e DB_DATABASE=$MYSQL_DATABASE \
+                    -u node \
+                    $BUILD_IMAGE_REPO_TAG-test
+                    '''
+            }
+            post{
+                always{
+                    sh "docker rm --force driveDb"
+                }
+                success{
+                    echo "====++++Tests passed++++===="
+                }
+                failure{
+                    echo "====++++Tests failed++++===="
+                }
+            }
+        }
 
         stage('Audit and scans') {
             steps {
