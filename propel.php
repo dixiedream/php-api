@@ -31,12 +31,12 @@ return [
             ]
         ],
         'runtime' => [
-            'defaultConnection' => getenv('DB_DATABASE'),
-            'connections' => [getenv('DB_DATABASE')]
+            'defaultConnection' => 'default',
+            'connections' => ['default'],
         ],
         'generator' => [
-            'defaultConnection' => getenv('DB_DATABASE'),
-            'connections' => [getenv('DB_DATABASE')]
-        ]
+            'defaultConnection' => 'default',
+            'connections' => ['default'],
+        ],
     ]
 ];

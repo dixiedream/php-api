@@ -3,7 +3,10 @@ scripts
 .git
 .gitignore
 docker-compose.*
+Dockerfile
 Jenkinsfile
 README.md
 TODO.md
 schema.xml
+*.sql
+*.gz

@@ -14,11 +14,12 @@ pipeline{
         BRANCH_NAME = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
         COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
         BUILD_IMAGE_REPO_TAG = "${params.IMAGE_REPO_NAME}:${env.BUILD_TAG}"
+        PKG_VERSION = "${readJSON(file: 'composer.json').version}"
     }
     stages{
         stage ("Start") {
             steps {
-                slackSend (color: 'warning', message: "Job started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                slackSend (color: 'warning', message: "Job started ${env.JOB_NAME} $PKG_VERSION (<${env.BUILD_URL}|Open>)")
             }
         }
         stage('Build') {
@@ -94,11 +95,11 @@ pipeline{
 
         stage('Build production image') {
             steps {
-                sh "docker build -t $BUILD_IMAGE_REPO_TAG ."
-                sh "docker tag $BUILD_IMAGE_REPO_TAG ${params.IMAGE_REPO_NAME}:$COMMIT_TAG"
-                sh "docker tag $BUILD_IMAGE_REPO_TAG ${params.IMAGE_REPO_NAME}:${readJSON(file: 'composer.json').version}"
-                sh "docker tag $BUILD_IMAGE_REPO_TAG ${params.IMAGE_REPO_NAME}:${params.LATEST_BUILD_TAG}"
-                sh "docker tag $BUILD_IMAGE_REPO_TAG ${params.IMAGE_REPO_NAME}:$BRANCH_NAME-latest"
+                sh('docker build -t $BUILD_IMAGE_REPO_TAG .')
+                sh('docker tag $BUILD_IMAGE_REPO_TAG ${IMAGE_REPO_NAME}:$COMMIT_TAG')
+                sh('docker tag $BUILD_IMAGE_REPO_TAG ${IMAGE_REPO_NAME}:$PKG_VERSION')
+                sh('docker tag $BUILD_IMAGE_REPO_TAG ${IMAGE_REPO_NAME}:${LATEST_BUILD_TAG}')
+                sh('docker tag $BUILD_IMAGE_REPO_TAG ${IMAGE_REPO_NAME}:$BRANCH_NAME-latest')
             }
             post{
                 success{
@@ -117,12 +118,13 @@ pipeline{
                 }
             }
             steps {
-                sh "echo $REGISTRY_CREDS_PSW | docker login -u $REGISTRY_CREDS_USR --password-stdin $REGISTRY_NAME"
-                sh "docker push $BUILD_IMAGE_REPO_TAG"
-                sh "docker push ${params.IMAGE_REPO_NAME}:$COMMIT_TAG"
-                sh "docker push ${params.IMAGE_REPO_NAME}:${readJSON(file: 'composer.json').version}"
-                sh "docker push ${params.IMAGE_REPO_NAME}:${params.LATEST_BUILD_TAG}"
-                sh "docker push ${params.IMAGE_REPO_NAME}:$BRANCH_NAME-latest"
+                sh('docker login -u $REGISTRY_CREDS_USR -p $REGISTRY_CREDS_PSW $REGISTRY_NAME')
+                // Production image
+                sh('docker push $BUILD_IMAGE_REPO_TAG')
+                sh('docker push ${IMAGE_REPO_NAME}:$COMMIT_TAG')
+                sh('docker push ${IMAGE_REPO_NAME}:$PKG_VERSION')
+                sh('docker push ${IMAGE_REPO_NAME}:${LATEST_BUILD_TAG}')
+                sh('docker push ${IMAGE_REPO_NAME}:$BRANCH_NAME-latest')
             }
             post{
                 always {
@@ -133,16 +135,28 @@ pipeline{
                 }
             }
         }
+
+        stage ("Cleaning") {
+            when {
+                expression {
+                     env.BUILD_NUMBER.toBigInteger().mod(5) == 0
+                }
+            }
+            steps {
+                echo "Cleaning workspace"
+                deleteDir()
+            }
+        }
     }
     post{
         always{
             echo "====++++Job done++++===="
         }
         success{
-            slackSend (color: 'good', message: "Job done ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend (color: 'good', message: "Job done ${env.JOB_NAME} $PKG_VERSION (<${env.BUILD_URL}|Open>)")
         }
         failure{
-            slackSend (color: 'danger', message: "Job failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend (color: 'danger', message: "Job failed ${env.JOB_NAME} $PKG_VERSION (<${env.BUILD_URL}|Open>)")
         }
     }
 }

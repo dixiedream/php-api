@@ -2,3 +2,5 @@ assets/php/controllers/Test.php
 vendor
 *.env
 *.cache
+*.gz
+*.sql

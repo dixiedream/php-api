@@ -15,17 +15,17 @@
     }
   },
   "require": {
-    "monolog/monolog": "^2.1.0",
-    "phpmailer/phpmailer": "^6.1.6",
+    "monolog/monolog": "^2.2.0",
+    "phpmailer/phpmailer": "^6.4.1",
     "propel/propel": "~2.0@dev",
     "phroute/phroute": "^2.1"
   },
   "require-dev": {
-    "guzzlehttp/guzzle": "^7.0",
-    "phpmd/phpmd": "@stable",
-    "phpunit/phpunit": "^9",
-    "squizlabs/php_codesniffer": "^3.5.5",
-    "friendsofphp/php-cs-fixer": "^2.16",
+    "guzzlehttp/guzzle": "^7.3.0",
+    "phpmd/phpmd": "^2",
+    "phpunit/phpunit": "^9.5.4",
+    "squizlabs/php_codesniffer": "^3.6.0",
+    "friendsofphp/php-cs-fixer": "^3.0",
     "sebastian/phpcpd": "^6.0"
   },
   "scripts": {

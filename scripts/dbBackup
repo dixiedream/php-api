@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+composefile=${1:-docker-compose.yml}
+db=${MYSQL_DATABASE:-phpboilerplate}
+
+echo "Dumping database..."
+docker-compose -f "$composefile" exec -T database sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE' > "./$db.sql"
+
+echo "Compressing..."
+gzip -f "./$db.sql"
+
+notify-send "Db backup" "Dump saved to $db.sql"
